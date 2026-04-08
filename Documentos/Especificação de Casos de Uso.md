@@ -1,7 +1,7 @@
 # Especificação de Casos de Uso
 
 ## Sistema de Gestão da Secretaria Escolar DF
-
+Versão em PDF formatada enviada no AVA.
 ---
 
 ## UC01 – Realizar Login
@@ -84,7 +84,7 @@
 
 **Fluxo principal**
 1. Usuário acessa consulta
-2. Informa critério de busca
+2. Informa critério de busca (nome ou matrícula)
 3. Sistema consulta banco
 4. Sistema exibe resultados
 
@@ -105,7 +105,7 @@
 - Registro existente
 
 **Fluxo principal**
-1. Usuário busca registro
+1. Usuário busca registro informando nome ou matrícula do aluno
 2. Seleciona registro
 3. Sistema exibe dados
 4. Usuário altera informações
@@ -130,7 +130,7 @@
 - Registro existente
 
 **Fluxo principal**
-1. Usuário seleciona registro
+1. Usuário busca registro informando nome ou matrícula
 2. Clica em excluir
 3. Sistema solicita confirmação
 4. Usuário confirma
