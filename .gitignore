@@ -1,0 +1,24 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Tool caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.cache/
+
+# Environment caches
+.venv/
+venv/
+env/
+.env
+.env.*
+!*.env.example
+!*/.env.example
+
+# OS/editor cache
+.DS_Store
+Thumbs.db

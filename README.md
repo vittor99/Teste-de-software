@@ -1,4 +1,6 @@
-# Teste-de-software
+# Sistema de Gestão da Secretaria Escolar DF
+
+O Sistema de Gestão da Secretaria Escolar DF é uma plataforma digital desenvolvida para apoiar as atividades administrativas de instituições de ensino, centralizando e organizando informações acadêmicas e administrativas.
 
 ## Estrutura do projeto
 
@@ -18,10 +20,11 @@ Códigos/
 
 ## Tecnologias
 - HTML5
-- tailwindcss
+- Tailwind CSS
 - Python 3.12
 - Flask
 - PyMySQL
+- cryptography
 - MySQL 8.4
 - Docker e Docker Compose
 
@@ -30,26 +33,49 @@ Códigos/
 - Docker
 - Docker Compose
 
-Para instalar o Docker Desktop siga o passo a passo abaixo:
-
-1. Abra https://www.docker.com/products/docker-desktop no seu navegador.
-2. Clique em **Download for Windows/Mac** (ou selecione o instalador Linux se estiver em WSL) e faça o download do instalador adequado à sua plataforma.
-3. Execute o instalador e siga as instruções na tela; mantenha as opções padrão a menos que precise de uma configuração específica.
-4. Ao finalizar, abra o Docker Desktop e aguarde ele inicializar completamente (ícone na bandeja indicando que o daemon está ativo).
-5. Caso necessário, faça login com sua conta Docker ou crie uma gratuita para acessar recursos extras.
-6. Verifique se o Docker e o Compose estão funcionando executando `docker version` e `docker compose version` no terminal.
-
 ## Como executar
 
-1. Entre na pasta [`Códigos`](/home/roberto/Documents/GitHub/Teste-de-software/Códigos).
-2. Execute:
+1. Entre na pasta `Códigos`:
 
 ```bash
-docker compose up --build
+cd Códigos
 ```
 
-3. Acesse a aplicação em `http://localhost:5000`.
-4. O MySQL ficará disponível na porta `3306`.
+2. Crie o arquivo de ambiente a partir do exemplo:
+
+```bash
+cp .env.example .env
+```
+
+3. Edite o `.env` e defina valores seguros para:
+- `SECRET_KEY`
+- `DB_PASSWORD`
+- `MYSQL_ROOT_PASSWORD`
+
+4. Suba os serviços:
+
+```bash
+docker compose up -d --build
+```
+
+5. Verifique se os containers estão rodando:
+
+```bash
+docker compose ps
+```
+
+6. Execute o seed para criar o usuário administrador inicial:
+
+```bash
+docker compose exec app python3 -m app.seed
+```
+
+7. Acesse a aplicação em `http://localhost:5000`.
+8. O MySQL ficará disponível na porta `3306`.
+
+Credenciais padrão geradas pelo script de seed (recomenda-se alterar para maior segurança):
+- Email: `admin@admin.com`
+- Senha: `123`
 
 ## Containers
 
@@ -58,17 +84,20 @@ docker compose up --build
 
 ## Banco de dados
 
-O banco é criado a partir de [schema.sql](/home/roberto/Documents/GitHub/Teste-de-software/Códigos/database/schema.sql). Para acessar via MySQL Workbench siga:
+O banco é criado a partir de `database/schema.sql`.
 
-1. Garanta que o container `db` esteja iniciado (`docker compose up -d` no diretório `Códigos`).
-2. Abra o MySQL Workbench e clique em **New Connection**.
-3. Configure a conexão com host `localhost`, porta `3306` e o usuário/senha definidos no `docker-compose.yml`.
-4. Clique em **Test Connection** para validar e, depois, em **OK** para salvar.
-5. Após conectar, você pode explorar o banco, criar tabelas e executar consultas a partir da interface gráfica.
+Importante:
+- As variáveis `MYSQL_*` e criação de usuário/banco são aplicadas na primeira inicialização do volume do MySQL.
+- Se você trocar senha no `.env` depois disso, será necessário recriar o volume:
+
+```bash
+docker compose down -v
+docker compose up -d --build
+```
 
 ## Configuração
 
-As configurações da aplicação ficam em [config.py](/home/roberto/Documents/GitHub/Teste-de-software/Códigos/config.py) e são lidas de variáveis de ambiente:
+As configurações da aplicação ficam em `config.py` e são lidas de variáveis de ambiente:
 
 - `SECRET_KEY`
 - `DB_HOST`
@@ -76,8 +105,9 @@ As configurações da aplicação ficam em [config.py](/home/roberto/Documents/G
 - `DB_USER`
 - `DB_PASSWORD`
 - `DB_NAME`
+- `MYSQL_ROOT_PASSWORD` (usada pelo container do MySQL)
 
-No ambiente Docker, essas variáveis são definidas em [docker-compose.yml](/home/roberto/Documents/GitHub/Teste-de-software/Códigos/docker-compose.yml).
+No ambiente Docker, as variáveis são lidas do arquivo `.env` via `docker-compose.yml`.
 
 ## Arquitetura
 

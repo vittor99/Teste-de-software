@@ -5,9 +5,7 @@ from app.database import get_connection
 
 def run_seed():
     usuarios = [
-        ("admin@gmail.com", generate_password_hash("123"), "ADMIN"),
-        ("prof@gmail.com", generate_password_hash("123"), "PROFESSOR"),
-        ("aluno@gmail.com", generate_password_hash("123"), "ALUNO"),
+        ("admin@admin.com", generate_password_hash("123"), "ADMIN")
     ]
 
     with get_connection() as connection:
